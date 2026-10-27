@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Détails</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Détails tâche</h1>
+    <div id="details"></div>
+
+    <br>
+
+    <a id="editLink">
+
+        <button>Modifier</button>
+
+    </a>
+
+    <button onclick="deleteTask()">
+
+        Supprimer
+
+    </button>
+
+    <script>
+        const params = new URLSearchParams(window.location.search); 
+
+        const id = params.get('id');
+
+        document.getElementById('editLink').href = `edit.html?id=${id}`;
+
+        async function loadTask() { 
+            const response = await fetch(`/taches/${id}`);
+
+            const task = await response.json();
+
+            document.getElementById('details').innerHTML = `
+                <h2>${task.titre}</h2>
+
+                <p>${task.description}</p>
+
+                <p>Terminée : ${task.estTerminee ? 'Oui' : 'Non'}</p>
+            `;
+        }
+
+        async function deleteTask() {
+
+            await fetch(`/taches/${id}`, {
+                method : 'DELETE'
+
+        });
+        
+            window.location.href = '/';
+        }
+        
+        loadTask();
+    </script>
+</body>
+</html>

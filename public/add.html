@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajouter une tâche</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <h1>Ajouter une tâche</h1>
+    
+    <input type="text" id="titre" placeholder="Titre">
+
+    <br><br>
+
+    <input type="text" id="description" placeholder="Description">
+
+    <br><br>
+
+    <button onclick="addTask()">
+
+        Ajouter
+
+    </button>
+    
+    <script>
+
+        async function addTask () {
+
+            const titre = document.getElementById('titre').value;
+
+            const description = document.getElementById('description').value;
+
+            await fetch('/taches', {
+
+                method: 'POST',
+
+                headers: {
+                    'content-Type':'application/json'
+                },
+
+                body: JSON.stringify({
+
+                    titre,
+                    description,
+                    estTerminee: false
+                })
+            })
+
+            window.location.href = '/';
+
+        }
+    </script>
+</body>
+</html>

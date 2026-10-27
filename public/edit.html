@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Modifier</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Modifier tâche</h1>
+
+    <input type="text" id="titre">
+
+    <br><br> 
+
+    <input type="text" id="description">
+
+    <br><br>
+    
+    <label>
+
+        Terminée
+
+        <input type="checkbox" id="status">
+
+    </label>
+
+    <br><br>
+
+    <button onclick="updateTask()">
+
+        Sauvegarder
+
+    </button>
+
+    <script> 
+
+        const params= new URLSearchParams(window.location.search);
+        const id = params.get('id')
+        
+        async function loadTask() {
+
+            const response = await fetch(`/taches/${id}`);
+
+            const task = await response.json();
+
+            document.getElementById('titre').value = task.titre;
+
+            document.getElementById('description').value = task.description;
+
+            document.getElementById('status').checked = task.estTerminee;
+        }
+
+        async function updateTask() {
+             const titre = document.getElementById('titre').value;
+
+             const description = document.getElementById('description').value;
+
+             const estTerminee = document.getElementById('status').checked;
+
+             await fetch(`/taches/${id}`, {
+
+                method:'PUT',
+
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+                    titre,
+                    description,
+                    estTerminee
+                })
+
+             });
+                window.location.href = '/';
+            }
+
+            loadTask();
+
+        </script>
+
+</body>
+</html>
